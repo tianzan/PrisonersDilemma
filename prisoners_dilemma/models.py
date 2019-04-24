@@ -34,7 +34,9 @@ class Subsession(BaseSubsession):
     def creating_session(self):
 
         if self.round_number == 1:
-
+            # for tracking the current match number
+            self.match_number = 1
+            self.session.vars['current_match'] = 1
             # Fetches parameters from settings file
             num_matches = self.session.config['num_matches']
             prob_continue = self.session.config['prob_continue']
@@ -70,12 +72,16 @@ class Subsession(BaseSubsession):
             self.group_randomly()
             # Fills in first_period and last_period fields
             self.first_period = True
-            if self.round_number+1 in self.session.vars['first_rounds']:
+            # updates match number
+            if self.round_number > 1:
+                self.session.vars['current_match'] += 1
+                self.match_number = self.session.vars['current_match']
+            if self.round_number + 1 in self.session.vars['first_rounds']:
                 self.last_period = True
 
         # maintains group structure match from previous round has not terminated
         else:
-            self.group_like_round(self.round_number-1)
+            self.group_like_round(self.round_number - 1)
 
 
 class Group(BaseGroup):
