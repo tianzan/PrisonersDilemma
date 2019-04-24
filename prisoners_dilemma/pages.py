@@ -14,7 +14,10 @@ class ResultsWaitPage(WaitPage):
 
 
 class Results(Page):
-    pass
+    def vars_for_template(self):
+        return {
+            'first_rounds': self.session.vars['first_rounds'],
+        }
 
 
 page_sequence = [
